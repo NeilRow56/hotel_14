@@ -6,6 +6,14 @@ import { UserButton, useAuth } from '@clerk/nextjs'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import SearchInput from './SearchInput'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export function Navbar() {
   const router = useRouter()
@@ -37,6 +45,19 @@ export function Navbar() {
                 </Button>
               </>
             )}
+            <DropdownMenu>
+              <DropdownMenuTrigger>Create</DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Hotel</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link href="/hotel/new">New</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>Team</DropdownMenuItem>
+                <DropdownMenuItem>Subscription</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <UserButton afterSignOutUrl="/" />
           </div>
         </div>
