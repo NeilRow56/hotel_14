@@ -3,9 +3,128 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
   provider = "mongodb"
+ 
   url      = env("DATABASE_URL")
+}
+
+model Hotel {
+  id               String @id @default(uuid()) @map("_id")
+  userId           String
+  title            String
+  description      String
+  image            String
+  country          String
+  state            String
+  locationDescription      String 
+  gym              Boolean @default(false)
+  spa              Boolean @default(false)
+  bar              Boolean @default(false)
+  laundry          Boolean @default(false)
+  restaurant       Boolean @default(false)
+  shopping         Boolean @default(false)
+  freeParking      Boolean @default(false)
+  bikeRental       Boolean @default(false)
+  freeWifi         Boolean @default(false)
+  movieNights      Boolean @default(false)
+  swimmingPool     Boolean @default(false)
+  coffeeShop       Boolean @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  rooms            Room[]
+  bookings         Booking[]
+
+  @@fulltext([title])
+
+}
+
+// On MongoDB, you can use the @@fulltext index attribute (via the fullTextIndex preview feature) with the sort argument to add fields to your full-text index in ascending or descending order. The following example adds a @@fulltext index to the title and content fields of the Post model, and sorts the title field in descending order:
+
+// schema.prisma
+
+// generator js {
+
+//   provider        = "prisma-client-js"
+
+//   previewFeatures = ["fullTextIndex"]
+
+// }
+
+
+// datasource db {
+
+//   provider = "mongodb"
+
+//   url      = env("DATABASE_URL")
+
+// }
+
+
+// model Post {
+
+//   id      String @id @map("_id") @db.ObjectId
+
+//   title   String
+
+//   content String
+
+
+//   @@fulltext([title(sort: Desc), content])
+
+// }
+
+model Room {
+  id               String @id @default(uuid()) @map("_id")
+  title            String
+  description      String
+  bedCount         Int @default(0)
+  guestCount       Int @default(0)
+  kingBed          Int @default(0)
+  queenBed         Int @default(0)
+  bathroomCount    Int @default(0)
+  image            String
+  breakfastPrice   Int
+  roomPrice        Int
+  roomService              Boolean @default(false)
+  TV               Boolean @default(false)
+  balcony          Boolean @default(false)
+  freeWifi         Boolean @default(false)
+  cityView         Boolean @default(false)
+  oceanView        Boolean @default(false)
+  forestView       Boolean @default(false)
+  mountainView     Boolean @default(false)
+  airConditioned   Boolean @default(false)
+  soundProof       Boolean @default(false)
+  hotelId          String 
+  Hotel            Hotel? @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  Booking          Booking []
+
+  @@index([hotelId])
+}
+
+model Booking {
+  id               String @id @default(uuid()) @map("_id")
+  userName         String
+  userId           String
+  roomId           String 
+  hotelId          String 
+  hotelOwnerId     String
+  startDate        DateTime
+  endDate          DateTime
+  breakfastIncluded Boolean
+  currency         String
+  totalPrice       Int
+  paymentStatus    Boolean @default(false)
+  paymentIntentId  String @unique
+  bookedAt         DateTime @default(now())
+  Hotel           Hotel? @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  Room             Room? @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([hotelId])
+  @@index([roomId])
 }

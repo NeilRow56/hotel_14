@@ -5,6 +5,7 @@ import { Button } from './ui/button'
 import { UserButton, useAuth } from '@clerk/nextjs'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import SearchInput from './SearchInput'
 
 export function Navbar() {
   const router = useRouter()
@@ -21,6 +22,7 @@ export function Navbar() {
             <h1 className="text-3xl font-bold">Hotel 14</h1>
           </span>
         </div>
+        <SearchInput></SearchInput>
 
         <div className="flex items-center gap-x-5">
           <ThemeToggle />
