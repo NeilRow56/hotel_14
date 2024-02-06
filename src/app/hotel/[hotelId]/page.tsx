@@ -17,7 +17,7 @@ const HotelCreatePage = async ({ params }: HotelPageProps) => {
   if (hotel && hotel.userId !== userId) return <div>Access Denied</div>
 
   return (
-    <div>
+    <div className="px-2">
       <AddHotelForm hotel={hotel} />
     </div>
   )

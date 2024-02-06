@@ -20,6 +20,7 @@ model Hotel {
   image            String
   country          String
   state            String
+  city             String
   locationDescription      String 
   gym              Boolean @default(false)
   spa              Boolean @default(false)
