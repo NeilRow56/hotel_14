@@ -20,8 +20,14 @@ import {
 import { Input } from '../ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
+import { SingleImageDropzone } from '@/components/hotel/SingleImageDropzone'
+import { useEdgeStore } from '@/lib/edgestore'
 
 import { ChangeEvent, useState } from 'react'
+import { useToast } from '../ui/use-toast'
+import Image from 'next/image'
+import { Button } from '../ui/button'
+import { Loader2, XCircle } from 'lucide-react'
 
 interface AddHotelFormProps {
   hotel: HotelWithRooms | null
@@ -57,7 +63,23 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
     },
   })
 
+  const [file, setFile] = useState<File>()
+  const [progress, setProgress] = useState(0)
+  const [image, setImage] = useState<string | undefined>(hotel?.image)
+  const [imageIsDeleting, setImageIsDeleting] = useState(false)
+  const { edgestore } = useEdgeStore()
+
+  const { toast } = useToast()
+
   const onSubmit = () => {}
+
+  const handleImageDelete = async (image: string) => {
+    setImageIsDeleting(true)
+    await edgestore.publicFiles.delete({
+      url: image,
+    })
+    setImage('')
+  }
 
   return (
     <div>
@@ -311,12 +333,82 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       Select an image to showcase your hotel
                     </FormDescription>
                     <FormControl>
-                      <Input
-                        className="bg-primary"
-                        type="file"
-                        placeholder="shadcn"
-                        {...field}
-                      />
+                      {image ? (
+                        <>
+                          <div className="relative mt-4 max-h-[400px] min-h-[200px] min-w-[200px] max-w-[400px]">
+                            <Image
+                              fill
+                              src={image}
+                              alt="Hotel Image"
+                              className="object-contain"
+                            />
+                            <Button
+                              onClick={() => handleImageDelete(image)}
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-[-12px] top-0"
+                            >
+                              {imageIsDeleting ? <Loader2 /> : <XCircle />}
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <section className="mx-auto my-8 w-full max-w-4xl rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800 sm:p-6 md:p-8">
+                            <div className=" flex flex-col">
+                              <div className="mx-auto">
+                                <SingleImageDropzone
+                                  width={200}
+                                  height={200}
+                                  value={file}
+                                  onChange={(file) => {
+                                    setFile(file)
+                                  }}
+                                />
+                                {progress < 100 && (
+                                  <div className="w-full rounded-full bg-gray-200 dark:bg-gray-700">
+                                    <div
+                                      className="rounded-full bg-blue-600 p-0.5 text-center text-xs font-medium leading-none text-blue-100"
+                                      style={{ width: '85' }}
+                                    >
+                                      {' '}
+                                    </div>
+                                  </div>
+                                )}
+
+                                <div className="flex justify-center">
+                                  <button
+                                    className="mt-1 rounded-lg bg-blue-500 px-2 py-1 text-gray-50"
+                                    onClick={async () => {
+                                      if (file) {
+                                        const res =
+                                          await edgestore.publicFiles.upload({
+                                            file,
+                                            onProgressChange: (progress) => {
+                                              console.log(progress)
+                                              setProgress(progress)
+                                            },
+                                          })
+                                        // you can run some server action or api here
+                                        // to add the necessary data to your database
+                                        console.log(res)
+                                        setImage(res?.url)
+                                        toast({
+                                          variant: 'success',
+                                          description: '🚀 Upload complete',
+                                        })
+                                      }
+                                    }}
+                                  >
+                                    Upload
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </section>
+                        </>
+                      )}
                     </FormControl>
                   </FormItem>
                 )}

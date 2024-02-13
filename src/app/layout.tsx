@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navbar } from '@/components/Navbar'
 import Container from '@/components/Container'
 import { EdgeStoreProvider } from '@/lib/edgestore'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster />
             <EdgeStoreProvider>
               <main className="flex min-h-screen flex-col bg-secondary">
                 <Navbar />

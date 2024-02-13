@@ -7,7 +7,7 @@ import { useState } from 'react'
 export default function SingleImageDropzoneUsage() {
   const [file, setFile] = useState<File>()
   const [progress, setProgress] = useState(0)
-  const [imageUrl, setImageUrl] = useState('')
+  const [imageUrl, setImageUrl] = useState<string | undefined>()
 
   const { edgestore } = useEdgeStore()
 
