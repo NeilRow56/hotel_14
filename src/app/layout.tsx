@@ -6,6 +6,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navbar } from '@/components/Navbar'
 import Container from '@/components/Container'
+import { EdgeStoreProvider } from '@/lib/edgestore'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,12 +31,14 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main className="flex min-h-screen flex-col bg-secondary">
-              <Navbar />
-              <section className="flex-grow ">
-                <Container>{children}</Container>
-              </section>
-            </main>
+            <EdgeStoreProvider>
+              <main className="flex min-h-screen flex-col bg-secondary">
+                <Navbar />
+                <section className="flex-grow ">
+                  <Container>{children}</Container>
+                </section>
+              </main>
+            </EdgeStoreProvider>
           </ThemeProvider>
         </body>
       </html>

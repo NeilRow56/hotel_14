@@ -53,7 +53,9 @@ export function Navbar() {
                 <DropdownMenuItem>
                   <Link href="/hotel/new">New</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/edgestore">edgestore</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Team</DropdownMenuItem>
                 <DropdownMenuItem>Subscription</DropdownMenuItem>
               </DropdownMenuContent>

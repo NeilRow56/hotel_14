@@ -43,41 +43,6 @@ model Hotel {
 
 }
 
-// On MongoDB, you can use the @@fulltext index attribute (via the fullTextIndex preview feature) with the sort argument to add fields to your full-text index in ascending or descending order. The following example adds a @@fulltext index to the title and content fields of the Post model, and sorts the title field in descending order:
-
-// schema.prisma
-
-// generator js {
-
-//   provider        = "prisma-client-js"
-
-//   previewFeatures = ["fullTextIndex"]
-
-// }
-
-
-// datasource db {
-
-//   provider = "mongodb"
-
-//   url      = env("DATABASE_URL")
-
-// }
-
-
-// model Post {
-
-//   id      String @id @map("_id") @db.ObjectId
-
-//   title   String
-
-//   content String
-
-
-//   @@fulltext([title(sort: Desc), content])
-
-// }
-
 model Room {
   id               String @id @default(uuid()) @map("_id")
   title            String

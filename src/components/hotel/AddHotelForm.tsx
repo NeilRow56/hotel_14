@@ -102,7 +102,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 )}
               />
               <div>
-                <FormLabel>Choose Amenities</FormLabel>
+                <h3 className="font-semibold text-primary">Choose Amenities</h3>
                 <FormDescription>
                   Choose amenities popular in your hotel.
                 </FormDescription>
@@ -114,6 +114,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="gym"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -129,6 +130,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="spa"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -144,6 +146,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="bar"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -159,6 +162,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="laundry"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -174,6 +178,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="restaurant"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -189,6 +194,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="shopping"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -204,6 +210,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="freeParking"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -219,6 +226,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="bikeRental"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -234,6 +242,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="freeWifi"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -249,6 +258,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="movieNights"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -264,6 +274,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="swimmingPool"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -279,6 +290,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
+                            name="coffeeShop"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -294,11 +306,18 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 name="image"
                 render={({ field }) => (
                   <FormItem className="flex flex-col space-y-3">
-                    <FormLabel>Upload an Image *</FormLabel>
+                    <h3 className="text-primary">Upload an Image *</h3>
                     <FormDescription>
                       Select an image to showcase your hotel
                     </FormDescription>
-                    <FormControl></FormControl>
+                    <FormControl>
+                      <Input
+                        className="bg-primary"
+                        type="file"
+                        placeholder="shadcn"
+                        {...field}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
