@@ -31,7 +31,7 @@ const useLocation = () => {
   }
 
   return {
-    getAllCountries: Country.getAllCountries(),
+    getAllCountries: Country.getAllCountries,
     getCountryByCode,
     getStateByCode,
     getCountryStates,

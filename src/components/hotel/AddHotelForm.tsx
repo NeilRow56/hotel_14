@@ -17,6 +17,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Input } from '../ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -71,12 +80,15 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
   const [imageIsDeleting, setImageIsDeleting] = useState(false)
   const [states, setStates] = useState<IState[]>([])
   const [cities, setCities] = useState<ICity[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const { edgestore } = useEdgeStore()
 
   const { toast } = useToast()
 
   const { getAllCountries, getCountryStates, getStateCities } = useLocation()
+
+  const countries = getAllCountries()
 
   useEffect(() => {
     const selectedCountry = form.watch('country')
@@ -446,7 +458,47 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 )}
               />
             </div>
-            <div className="flex flex-1 flex-col gap-6">Part 2</div>
+            <div className="flex flex-1 flex-col gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      {/* <FormLabel>Select Country *</FormLabel> */}
+                      <FormDescription>
+                        In which country is your property located?
+                      </FormDescription>
+                      <Select
+                        disabled={isLoading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="bg-background">
+                          <SelectValue
+                            defaultValue={field.value}
+                            placeholder="Select a Country"
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countries.map((country) => {
+                            return (
+                              <SelectItem
+                                key={country.isoCode}
+                                value={country.isoCode}
+                              >
+                                {country.name}
+                              </SelectItem>
+                            )
+                          })}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
           </div>
         </form>
       </Form>
