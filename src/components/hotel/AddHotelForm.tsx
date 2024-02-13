@@ -78,7 +78,13 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
     await edgestore.publicFiles.delete({
       url: image,
     })
+
     setImage('')
+    toast({
+      variant: 'success',
+      description: 'Image removed',
+    })
+    setImageIsDeleting(false)
   }
 
   return (
