@@ -23,11 +23,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { SingleImageDropzone } from '@/components/hotel/SingleImageDropzone'
 import { useEdgeStore } from '@/lib/edgestore'
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { Loader2, XCircle } from 'lucide-react'
+import useLocation from '@/app/hooks/useLocation'
+import { ICity, IState } from 'country-state-city'
 
 interface AddHotelFormProps {
   hotel: HotelWithRooms | null
@@ -67,9 +69,33 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
   const [progress, setProgress] = useState(0)
   const [image, setImage] = useState<string | undefined>(hotel?.image)
   const [imageIsDeleting, setImageIsDeleting] = useState(false)
+  const [states, setStates] = useState<IState[]>([])
+  const [cities, setCities] = useState<ICity[]>([])
+
   const { edgestore } = useEdgeStore()
 
   const { toast } = useToast()
+
+  const { getAllCountries, getCountryStates, getStateCities } = useLocation()
+
+  useEffect(() => {
+    const selectedCountry = form.watch('country')
+    const countryStates = getCountryStates(selectedCountry)
+    if (countryStates) {
+      setStates(countryStates)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('country')])
+
+  useEffect(() => {
+    const selectedCountry = form.watch('country')
+    const selectedState = form.watch('state')
+    const stateCities = getStateCities(selectedCountry, selectedState)
+    if (stateCities) {
+      setCities(stateCities)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('country'), form.watch('state')])
 
   const onSubmit = () => {}
 
