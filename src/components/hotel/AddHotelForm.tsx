@@ -36,7 +36,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import Image from 'next/image'
 import { Button } from '../ui/button'
-import { Loader2, XCircle } from 'lucide-react'
+import { Loader2, Pencil, PencilLine, XCircle } from 'lucide-react'
 import useLocation from '@/app/hooks/useLocation'
 import { ICity, IState } from 'country-state-city'
 import { Label } from '../ui/label'
@@ -52,7 +52,7 @@ export type HotelWithRooms = Hotel & {
 const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
   const form = useForm<CreateHotelValues>({
     resolver: zodResolver(createHotelSchema),
-    defaultValues: {
+    defaultValues: hotel || {
       title: '',
       description: '',
       image: '',
@@ -75,6 +75,16 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
     },
   })
 
+  const {
+    handleSubmit,
+    watch,
+    trigger,
+    control,
+    setValue,
+    setFocus,
+    formState: { isSubmitting },
+  } = form
+
   const [file, setFile] = useState<File>()
   const [progress, setProgress] = useState(0)
   const [image, setImage] = useState<string | undefined>(hotel?.image)
@@ -90,6 +100,17 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
   const { getAllCountries, getCountryStates, getStateCities } = useLocation()
 
   const countries = getAllCountries()
+
+  useEffect(() => {
+    if (typeof image === 'string') {
+      form.setValue('image', image, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image])
 
   useEffect(() => {
     const selectedCountry = form.watch('country')
@@ -110,7 +131,10 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('country'), form.watch('state')])
 
-  const onSubmit = () => {}
+  async function onSubmit(values: CreateHotelValues) {
+    // alert(JSON.stringify(values, null, 2))
+    console.log(values)
+  }
 
   const handleImageDelete = async (image: string) => {
     setImageIsDeleting(true)
@@ -129,7 +153,7 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <h3 className="text-xl font-semibold text-primary">
             {hotel ? 'Update your hotel' : 'Describe your hotel'}
           </h3>
@@ -602,6 +626,41 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                       </FormItem>
                     )}
                   />
+                </div>
+                <div className="pap-2 flex flex-wrap justify-between">
+                  {hotel ? (
+                    <Button
+                      type="submit"
+                      className="max-w-[150px]"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4" /> Updating
+                        </>
+                      ) : (
+                        <>
+                          <PencilLine className="mr-2 h-4 w-4" /> Update
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      className="max-w-[150px]"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4" /> Creating
+                        </>
+                      ) : (
+                        <>
+                          <Pencil className="mr-2 h-4 w-4" /> Create Hotel
+                        </>
+                      )}{' '}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
