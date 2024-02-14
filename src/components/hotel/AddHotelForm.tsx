@@ -39,6 +39,7 @@ import { Button } from '../ui/button'
 import { Loader2, XCircle } from 'lucide-react'
 import useLocation from '@/app/hooks/useLocation'
 import { ICity, IState } from 'country-state-city'
+import { Label } from '../ui/label'
 
 interface AddHotelFormProps {
   hotel: HotelWithRooms | null
@@ -139,7 +140,9 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Hotel Title *</FormLabel>
+                    <FormLabel className="font-semibold text-primary">
+                      Hotel Title *
+                    </FormLabel>
                     <FormDescription>Provide your hotel name.</FormDescription>
                     <FormControl>
                       <Input placeholder="Beach Hotel" {...field} />
@@ -153,9 +156,11 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Hotel Description *</FormLabel>
+                    <FormLabel className="font-semibold text-primary">
+                      Hotel Description *
+                    </FormLabel>
                     <FormDescription>
-                      Provide a detailed description of you hotel.
+                      Provide a detailed description of your hotel.
                     </FormDescription>
                     <FormControl>
                       <Textarea
@@ -167,8 +172,11 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                   </FormItem>
                 )}
               />
-              <div>
-                <h3 className="font-semibold text-primary">Choose Amenities</h3>
+              <div className="">
+                <h3 className=" mb-2 font-semibold text-primary">
+                  Choose Amenities
+                </h3>
+
                 <FormDescription>
                   Choose amenities popular in your hotel.
                 </FormDescription>
@@ -458,8 +466,11 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                 )}
               />
             </div>
-            <div className="flex flex-1 flex-col gap-6">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="flex flex-1 flex-col gap-2">
+              <h2 className=" font-semibold text-primary">
+                Select the Location of your property
+              </h2>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 ">
                 <FormField
                   control={form.control}
                   name="country"
@@ -497,6 +508,101 @@ const AddHotelForm = ({ hotel }: AddHotelFormProps) => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      {/* <FormLabel>Select Country *</FormLabel> */}
+                      <FormDescription>
+                        In which state is your property located?
+                      </FormDescription>
+                      <Select
+                        disabled={isLoading || states.length < 1}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className=" bg-background">
+                          <SelectValue
+                            defaultValue={field.value}
+                            placeholder="Select a State"
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {states.map((state) => {
+                            return (
+                              <SelectItem
+                                key={state.isoCode}
+                                value={state.isoCode}
+                              >
+                                {state.name}
+                              </SelectItem>
+                            )
+                          })}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="mt-12 grid  grid-cols-1 gap-14">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormDescription>
+                        In which town/city is your property located?
+                      </FormDescription>
+                      <Select
+                        disabled={isLoading || cities.length < 1}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className=" bg-background">
+                          <SelectValue
+                            defaultValue={field.value}
+                            placeholder="Select a Town or City"
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {cities.map((city) => {
+                            return (
+                              <SelectItem key={city.name} value={city.name}>
+                                {city.name}
+                              </SelectItem>
+                            )
+                          })}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <div className="mt-2">
+                  <FormField
+                    control={form.control}
+                    name="locationDescription"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-bold text-primary">
+                          Location Description *
+                        </FormLabel>
+                        <FormDescription>
+                          Provide a detailed description of your location.
+                        </FormDescription>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Located next to beach"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
